@@ -9,7 +9,36 @@
 #include "Student.h"
 using namespace std;
 
+class poof
+{
+    Student students;
+    string nameFacultet;
+    string number;
+public:
+    poof() : poof{"Null","Null","Null","Null",0}
+    {
+        cout << "poof Сработал конструктор по умолчанию" << endl;
+    }
+    poof(string number, string nameFacultet, string NameGroup,
+        string Name, int Age) :
+        number{ number }, nameFacultet{ nameFacultet },
+        students{ Name,Age, NameGroup }
+    {
+        cout << "poof Сработал конструктор с параметрами" << endl;
+    }
 
+};
+
+class Human
+{
+    char* name;
+public:
+    Human(char* name) : name{ name }{}
+    void Print()
+    {
+        cout << name << endl;
+    }
+};
 
 
 int main()
@@ -20,14 +49,12 @@ int main()
     SetConsoleCP(1251);
     srand(time(NULL));
 
-    vector<int> marks;
-    for (int j = 0; j < 5; j++)
-    {
-        int tmp = 1 + rand() % (12 - 1);
-        marks.push_back(tmp);
-    }
-    vector<Student> students{ 
-        { "bob", 45, "bwp333", marks },
-        {"pop", 35, "wwp357",marks}
-    };
+
+    char* p = new char[255];
+    cin.getline(p, 255);
+    Human num{ p };
+    num.Print();
+
+  
+    
 }

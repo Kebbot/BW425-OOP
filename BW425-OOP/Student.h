@@ -10,17 +10,17 @@ using namespace std;
 
 class Student 
 {
-    string name; // Имя
-    int age; // Возраст
-    string nameGroup; //Имя группы
-    vector<int> marks;  
-    int* mass;
+    string name{"unName"}; // Имя
+    int age{18}; // Возраст
+    string nameGroup{"unnameGroup"}; //Имя группы
+    int* mass{ nullptr };
 public:
     Student();
-    Student(string name, int age, string nameGroup, vector<int> marks);
-    Student(string name, int age, string nameGroup, int* mass);
+    Student(string name, int age, string nameGroup);
+    Student(string name, int age);
+    Student(string name);
     ~Student();
-    double getAver();
+
     void setName(string name);
     string getName();
     void setAge(int age);
