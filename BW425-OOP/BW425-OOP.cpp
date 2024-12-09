@@ -9,37 +9,34 @@
 #include "Student.h"
 using namespace std;
 
-class poof
+
+class Date
 {
-    Student students;
-    string nameFacultet;
-    string number;
+    int day;
+    int month;
+    int year;
 public:
-    poof() : poof{"Null","Null","Null","Null",0}
+    Date(int day, int month, int year) :
+        day{ day }, month{ month }, year{ year } 
+    {cout << "Date конструктор из " << this << endl;}
+    Date() : Date(1, 1, 1970) {}
+    ~Date()
     {
-        cout << "poof Сработал конструктор по умолчанию" << endl;
-    }
-    poof(string number, string nameFacultet, string NameGroup,
-        string Name, int Age) :
-        number{ number }, nameFacultet{ nameFacultet },
-        students{ Name,Age, NameGroup }
-    {
-        cout << "poof Сработал конструктор с параметрами" << endl;
+        cout << "Date деструктор из " << this << endl;
     }
 
-};
-
-class Human
-{
-    char* name;
-public:
-    Human(char* name) : name{ name }{}
     void Print()
     {
-        cout << name << endl;
+        cout << day << '.' << month << '.' << year << endl;
     }
-};
+    void setDay1(int dayP) {day = dayP;}
+    void setMonth1(int monthP) { month = monthP; }
+    void setYear1(int yearP) { year = yearP; }
 
+    Date& setDay2(int dayP) { day = dayP; return *this; }
+    Date& setMonth2(int monthP) { month = monthP; return *this; }
+    Date& setYear2(int yearP) { year = yearP; return *this; }
+};
 
 int main()
 {
@@ -49,12 +46,12 @@ int main()
     SetConsoleCP(1251);
     srand(time(NULL));
 
-
-    char* p = new char[255];
-    cin.getline(p, 255);
-    Human num{ p };
-    num.Print();
-
-  
+    Date date1{ 24,8,2024 };
+    //date1.setDay2(29).setMonth2(2).setYear2(2024).Print();
+    Date date2{ 19,07,2024 };
+    date1.Print();
+    date2.Print();
     
+    
+
 }
