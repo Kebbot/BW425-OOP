@@ -12,12 +12,14 @@ using namespace std;
 
 class Date
 {
+public:
     int day;
     int month;
     int year;
-public:
+    const int baseYear;
+//public:
     Date(int day, int month, int year) :
-        day{ day }, month{ month }, year{ year } 
+        day{ day }, month{ month }, year{ year }, baseYear{2000}
     {cout << "Date конструктор из " << this << endl;}
     Date() : Date(1, 1, 1970) {}
     ~Date()
@@ -25,17 +27,23 @@ public:
         cout << "Date деструктор из " << this << endl;
     }
 
-    void Print()
+    void Print() const
     {
         cout << day << '.' << month << '.' << year << endl;
     }
     void setDay1(int dayP) {day = dayP;}
     void setMonth1(int monthP) { month = monthP; }
     void setYear1(int yearP) { year = yearP; }
+    int getYear() const { return year; }
+    int getMonth() const { return month; }
+    int getDay() const { return day; }
 
     Date& setDay2(int dayP) { day = dayP; return *this; }
     Date& setMonth2(int monthP) { month = monthP; return *this; }
     Date& setYear2(int yearP) { year = yearP; return *this; }
+
+
+
 };
 
 int main()
@@ -46,12 +54,9 @@ int main()
     SetConsoleCP(1251);
     srand(time(NULL));
 
-    Date date1{ 24,8,2024 };
-    //date1.setDay2(29).setMonth2(2).setYear2(2024).Print();
-    Date date2{ 19,07,2024 };
-    date1.Print();
-    date2.Print();
-    
-    
-
+    Date dayP{ 11,03,2024 };
+    int yearP = dayP.getYear();
+    dayP.setYear1(10);
+    cout << dayP.getYear() << endl;
+ 
 }

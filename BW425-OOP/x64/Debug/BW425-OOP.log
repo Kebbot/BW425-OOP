@@ -1,3 +1,5 @@
 ﻿  BW425-OOP.cpp
 C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(47,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Student.cpp
+  Создание кода...
   BW425-OOP.vcxproj -> C:\Users\Admin\Documents\GitHub\BW425-OOP\x64\Debug\BW425-OOP.exe

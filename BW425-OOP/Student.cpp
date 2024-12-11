@@ -17,22 +17,35 @@ string Student::getNameGroup() { return nameGroup; }
 
 Student::Student() : Student{"Null",0,"Null"}
 {
-    //mass = new int[5];
-    cout << "Сработал конструктор по умолчанию " << &mass << endl;
+    
+    cout << "Сработал конструктор по умолчанию " << this << endl;
 }
 
 Student::Student(string name, int age, string nameGroup) : 
-    name{name}, age{age}, nameGroup{ nameGroup }
+    name{ name }, age{ age }, nameGroup{ nameGroup }, 
+    mass{ new int[age] {} }
 {
-    cout << "Сработал конструктор с параметрами " << &mass << endl;
+    cout << "Сработал конструктор с параметрами " << this << endl;
 }
 
 Student::Student(string name, int age) : Student{ name,age,"Null" } {}
 
 Student::Student(string name) : Student{ name,0,"Null" } {}
 
+Student::Student(const Student& object) : 
+    name{ object.name }, age{ object.age }, 
+    nameGroup{ object.nameGroup }, mass{ new int[object.age] {} } 
+{
+    cout << "Сработал конструктор копирования " << this << endl;
+}
+
 Student::~Student()
 {
-        cout << "Сработал Деструктор " << &mass << endl;
-        /*delete[] mass;*/   
+        cout << "Сработал Деструктор " << this << endl;
+        if(mass != nullptr)
+            delete[] mass;
+}
+void Student::Print()
+{
+    cout <<"Name: " << name << " - " << "age: " << age << endl;
 }

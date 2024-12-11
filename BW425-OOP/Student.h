@@ -13,12 +13,14 @@ class Student
     string name{"unName"}; // Имя
     int age{18}; // Возраст
     string nameGroup{"unnameGroup"}; //Имя группы
-    int* mass{ nullptr };
+    int* mass{nullptr};
 public:
     Student();
     Student(string name, int age, string nameGroup);
     Student(string name, int age);
     Student(string name);
+    Student(const Student& object);
+
     ~Student();
 
     void setName(string name);
@@ -27,5 +29,5 @@ public:
     int getAge();
     void setNameGroup(string nameGroup);
     string getNameGroup();
-
+    void Print();
 };
