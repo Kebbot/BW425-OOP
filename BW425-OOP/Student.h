@@ -20,8 +20,9 @@ public:
     Student(string name, int age);
     Student(string name);
     Student(const Student& object);
-
     ~Student();
+
+
 
     void setName(string name);
     string getName();

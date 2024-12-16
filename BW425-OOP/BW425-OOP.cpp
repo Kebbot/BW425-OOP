@@ -48,7 +48,7 @@ void Print(Date date)
     cout << date.day << '.' << date.month << '.' << date.year << endl;
 }
 
-Date baseDate() { return 2000; }
+
 
 class Array
 {
@@ -77,6 +77,84 @@ void Display(const Array& array)
     cout << endl;
 }
 
+class Point
+{
+    double x;
+    double y;
+public:
+    
+    Point(double x, double y) : x{x},y{y} {}
+    static const Point Sum(const Point& point1, const Point& point2)
+    {
+        return Point(point1.x + point2.x, point1.y + point2.y);
+    }
+    static const Point Subtract(const Point& point1, const Point& point2)
+    {
+        return Point(point1.x - point2.x, point1.y - point2.y);
+    }
+    static const Point Mult(const Point& point1, double value)
+    {
+        return Point(point1.x * value, point1.y * value);
+    }
+    static const Point Divide(const Point& point1, double value)
+    {
+        return Point(point1.x /  value, point1.y / value);
+    }
+    void Display() const
+    {
+        cout << "x = " << x << ' ' << "y = " << y << endl;
+    }
+    // перегрузка дружественной функцией
+    friend Point operator+(const Point& point1, const Point& point2)
+    {
+        return Sum(point1, point2);
+    }
+    friend Point operator-(const Point& point1, const Point& point2)
+    {
+        return Subtract(point1, point2);
+    }
+    friend Point operator*(const Point& point1, double value)
+    {
+        return Mult(point1, value);
+    }
+    friend Point operator/(const Point& point1, double value)
+    {
+        return Divide(point1, value);
+    }
+    friend Point operator*(double value, const Point& point1)
+    {
+        return Mult(point1, value);
+    }
+    friend Point operator/(double value, const Point& point1)
+    {
+        return Divide(point1, value);
+    }
+    const Point operator-()
+    {
+        return Point(-x, -y);
+    }
+    Point& operator++()
+    {
+        ++x; ++y; return *this;
+    }
+    Point& operator--()
+    {
+        --x; --y; return *this;
+    }
+    const Point operator++(int)
+    {
+        Point point{ x,y };
+        ++(*this);
+        return point;
+    }
+    const Point operator--(int)
+    {
+        Point point{ x,y };
+        --(*this);
+        return point;
+    }
+};
+
 int main()
 {
     system("chcp 1251 > nul");
@@ -85,26 +163,11 @@ int main()
     SetConsoleCP(1251);
     srand(time(NULL));
 
-    int size = 4;
-    Array array(size);
+    Point p1{ 1.1,1.5 };
+    Point p2{ 2,2 };
+    (p1++).Display();
+    p1.Display();
 
-    for (int i = 0; i < size; i++)
-    {
-        array.setValue(i, size - i);
-    }
-    Display(array);
-    cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-    Display(Array(3));
-    cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-    //Array array10 = 10; // так нельзя - ошибка компиляции 
-    Array array10{ 10 };
-
-    /*Print(2024);
-    Date date = 2015;
-    Print(date);
-    Date date2000 = baseDate();
-    Print(date2000);*/
- 
 }
 
-//перегрузка операторов = след. тема
+//перегрузка операторов сравнения = след. тема

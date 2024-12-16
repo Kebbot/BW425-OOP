@@ -1,3 +1,4 @@
 ﻿  BW425-OOP.cpp
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(86,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(164,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(172,1): warning C4717: main: рекурсия на всех путях выполнения, функция вызовет переполнение стека
   BW425-OOP.vcxproj -> C:\Users\Admin\Documents\GitHub\BW425-OOP\x64\Debug\BW425-OOP.exe
