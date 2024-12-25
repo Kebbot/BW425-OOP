@@ -432,6 +432,159 @@ public:
     }
 };
 
+class Dyn2Array
+{
+    int sizeY;
+    int sizeX;
+public:
+    int** data;
+    Dyn2Array(int sizeYp, int sizeXp) : sizeY{ sizeYp },
+        sizeX{ sizeXp }, data{ new int* [sizeYp] }
+    {
+        //стандартная версия
+       /* for (int y = 0; y < sizeY; y++)
+        {
+            data[y] = new int[sizeX];
+        }*/
+
+        int* data_elements{ new int[sizeY * sizeX] };
+        for (int y = 0; y < sizeY; y++)
+        {
+            data[y] = data_elements + y * sizeX;
+        }
+    }
+    void Print()const
+    {
+        for (int y = 0; y < sizeY; y++)
+        {
+            for (int x = 0; x < sizeX; x++)
+            {
+                cout << data[y][x] << '\t';
+            }
+            cout << endl;
+        }
+        cout << endl << endl;
+    }
+    
+    ~Dyn2Array()
+    {
+        /* for (int y = 0; y < sizeY; y++)
+         {
+             delete[] data[y];
+         }
+         delete[] data;*/
+
+        delete[] data[0];
+        delete[] data;
+    }
+};
+
+class Matrix
+{
+    int sizeY;
+    int sizeX;
+    int* data;
+    int index2d(int y,int x)
+        const { return y * sizeX + x; }
+
+    int index2d(int y, int x, int sizeXp)
+        const { return y * sizeXp + x; }
+public:
+    Matrix(int sizeYp, int sizeXp) :
+        sizeY{ sizeYp }, sizeX{ sizeXp },
+        data{ new int[sizeYp * sizeXp] {} } {}
+
+    int operator()(int y, int x) const
+    { return *(data + index2d(y, x)); }
+
+    int& operator()(int y, int x)
+    { return *(data + index2d(y, x));}
+
+    void deleteColumn(int colunPos)
+    {
+        --sizeX;
+        int* newData{ new int[sizeY * sizeX] };
+        for (int y = 0; y < sizeY; y++)
+        {
+            for (int x = 0; x < sizeX; x++)
+            {
+                *(newData + index2d(y, x)) =
+                    *(data + index2d(y, x + (x >= colunPos)));
+            }
+        }
+        delete[] data;
+        data = newData;
+    }
+    void addColumn(int colunPos, int* newCol = nullptr)
+    {
+        int* newData{ new int[sizeY * (sizeX+1)] };
+        for (int y = 0; y < sizeY; y++)
+        {
+            for (int x = 0; x < sizeX; x++)
+            {
+                *(newData + index2d(y, x +(x >= colunPos),sizeX +1)) =
+                    *(data + index2d(y, x));
+            }
+            *(newData + index2d(y, colunPos, sizeX + 1))
+                = newCol ? *(newCol + y) : 0;
+        }
+        delete[] data;
+        data = newData;
+        ++sizeX;
+    }
+
+    void deleteRow(int rowPos)
+    {
+        --sizeY;
+        int* newData{ new int[sizeY * sizeX] };
+        for (int y = 0; y < sizeY; y++)
+        {
+            for (int x = 0; x < sizeX; x++)
+            {
+                *(newData + index2d(y, x)) =
+                    *(data + index2d(y+(y>= rowPos), x));
+            }
+        }
+        delete[] data;
+        data = newData;
+    }
+    void addRow(int rowPos, int* newRow = nullptr)
+    {
+        int* newData{ new int[(sizeY+1) * sizeX] };
+        for (int y = 0; y < sizeY; y++)
+        {
+            for (int x = 0; x < sizeX; x++)
+            {
+                *(newData + index2d(y + (y >= rowPos), x)) =
+                    *(data + index2d(y, x));
+            }
+        }
+        for (int x = 0; x < sizeX; x++)
+        {
+            *(newData + index2d(rowPos, x))
+                = newRow ? *(newRow + x) : 0;
+        }
+        delete[] data;
+        data = newData;
+        ++sizeY;
+    }
+
+    void print()const
+    {
+        for (int y = 0; y < sizeY; y++)
+        {
+            for (int x = 0; x < sizeX; x++)
+            {
+                cout << (*this)(y, x) << '\t';
+            }
+            cout << endl;
+        }
+        cout << endl << endl;
+    }
+    ~Matrix() { delete[] data; }
+};
+
+
 int main()
 {
     system("chcp 1251 > nul");
@@ -440,7 +593,7 @@ int main()
     SetConsoleCP(1251);
     srand(time(NULL));
 
-    MedalTable mt1;
+    /*MedalTable mt1;
     mt1["USSR"][MedalRow::GOLD] = 14;
     mt1["USSR"][MedalRow::SILVER] = 5;
     mt1["USA"][MedalRow::BRONZE] = 4;
@@ -451,8 +604,47 @@ int main()
     mt1.print();
 
     const MedalTable mt2{ mt1 };
-    mt2.print();
+    mt2.print();*/
+//#define USER_INPUT 0;
+//
+//    int rows{ 3 };
+//    int columns{ 3 };
+//    int counter{ 1 };
+//#if USER_INPUT == 1
+//    cout << "Введите кол-во строк матрицы" << endl;
+//    cin >> rows;
+//    cout << "Введите кол-во столбцов матрицы" << endl;
+//    cin >> columns;
+//#endif 
+//
+//    Matrix matrix{ rows, columns };
+//    for (int y = 0; y < rows; y++)
+//    {
+//        for (int x = 0; x < columns; x++)
+//        {
+//            matrix (y,x) = counter++;
+//        }
+//    }
+//    matrix.print();
+//    cout << matrix(1, 1) <<endl;
+//    matrix.deleteColumn(2);
+//    matrix.print();
+//
+//    int* newColumns{ new int[columns] {11,22,33} };
+//    matrix.addColumn(0, newColumns);
+//    matrix.print();
+//
+//    matrix.deleteRow(2);
+//    matrix.print();
+//
+//    int* newRow{ new int[rows] {111,222,333} };
+//    matrix.addRow(2, newRow);
+//    matrix.print();
+//
+//    delete[] newRow;
+//    delete[] newColumns;
 
+   
   
 }
 
