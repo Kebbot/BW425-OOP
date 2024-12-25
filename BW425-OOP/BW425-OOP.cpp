@@ -5,7 +5,8 @@
 #include <cmath>
 #include <io.h>
 #include <vector>
-//#include <fstream>
+#include <fstream>
+#include <cassert>
 #include "Student.h"
 using namespace std;
 #define SQR(X) (X) * (X)
@@ -269,7 +270,20 @@ public:
             << size << " элементов в объекте " << this << endl;
         return *this;
     }
-   
+
+    int operator[](int idx)const // 1
+    {
+        //константная перегрузка, возвращающая эелемент по значению
+        assert(idx >= 0 and idx < size and "Index is out of range!");
+        return arr[idx];
+    }
+    int& operator[](int idx) // 2
+    {
+        // не константная перегрузка, возвращающая элемент по ссылке
+        assert(idx >= 0 and idx < size and "Index is out of range!");
+        return arr[idx];
+    }
+
     int getElem(int idx) const { return arr[idx]; }
     void setElem(int idx, int val) { arr[idx] = val; }
     void Print() const
@@ -301,8 +315,122 @@ DynArray arrayFactory(int arrSize)
 {
     DynArray arr{ arrSize };
     arr.Randomize();
-    return arr; //можно move(arr) - для вызова конструктора перемещения
+    return move(arr); //можно move(arr) - для вызова конструктора перемещения
 }
+
+class Tochka
+{
+    double x;
+    double y;
+  
+public:
+    Tochka() = default;
+    //Tochka(int pX, int pY) = delete; //Запрещаем использовать int в параметрах
+    Tochka(double pX, double pY) : x{ pX }, y{ pY } {}
+    Tochka& setX(int pX) = delete; /*{ x = pX; return *this; }*/
+    Tochka& setY(int pY) = delete; /*{ y = pY; return *this; }*/
+    void Pokaz() const
+    {
+        cout << "(" << x << "," << y << ")" << endl;
+    }
+};
+
+int maxX(int a, int b) { return a > b ? a : b; }
+template <typename T1, typename T2> 
+int maxX(T1 a, T2 b) = delete; // запретили использовать всё кроме int, int
+
+class MedalRow
+{
+    char country[5];
+    int medals[3];
+public:
+    /* определяем константы для удобного и однозначного
+    доступа к элементам массива */
+    static const int GOLD{ 0 };
+    static const int SILVER{ 1 };
+    static const int BRONZE{ 2 };
+    MedalRow(const char* countryP, const int* medalsP)
+    {
+        strcpy_s(country, 5, countryP ? countryP : "NON");
+        for (int i{ 0 }; i < 3; ++i)
+        {
+            medals[i] = medalsP ? medalsP[i] : 0;
+        }
+    }
+    MedalRow() : MedalRow(nullptr, nullptr) {}
+    MedalRow& setCountry(const char* countryP)
+    {
+        if (countryP)
+        {
+            strcpy_s(country, 5, countryP);
+        }
+        return *this;
+    }
+    const char* getCountry()const { return country; }
+    int& operator[](int idx)
+    {
+        assert((idx >= 0 and idx < 3) and "Index out of range!");
+        return medals[idx];
+    }
+    int operator[](int idx)const
+    {
+        assert((idx >= 0 and idx < 3) and "Index out of range!");
+        return medals[idx];
+    }
+    void print()const
+    {
+        std::cout << '[' << country << "]-( ";
+        for (int i{ 0 }; i < 3; ++i)
+        {
+            std::cout << medals[i];
+            if (i < 2) { std::cout << '\t'; }
+        }
+        std::cout << " )\n";
+    }
+};
+
+class MedalTable
+{
+public:
+    static const int maxSize{ 10 };
+private:
+    MedalRow medalRows[MedalTable::maxSize];
+    int size;
+    int findCountry(const char* country) const
+    {
+        for (int i = 0; i < size; i++)
+        {
+            if (strcmp(medalRows[i].getCountry(), country) == 0) { return i; }
+        }
+        return -1;
+    }
+public:
+    MedalTable() : size{0}{}
+    MedalRow& operator[](const char* country)
+    {
+        int idx{ findCountry(country) };
+        if (idx == -1)
+        {
+            assert(size < MedalTable::maxSize and "Table is FULL!");
+            idx = size++;
+            medalRows[idx].setCountry(country);
+        }
+        return medalRows[idx];
+    }
+    const MedalRow& operator[](const char* country) const
+    {
+        int idx{ findCountry(country) };
+        assert(idx != -1 and "Country not found on const table");
+        return medalRows[idx];
+    }
+    void print()const
+    {
+        for (int i = 0; i < size; i++)
+        {
+            medalRows[i].print();
+        }
+    }
+};
 
 int main()
 {
@@ -312,30 +440,19 @@ int main()
     SetConsoleCP(1251);
     srand(time(NULL));
 
-    DynArray ar1{ arrayFactory(10) };
-    cout << "ar1 элементы: ";
-    ar1.Print();
-    DynArray ar2{ arrayFactory(10) };
-    cout << "ar2 элементы: ";
-    ar2.Print();
-    /*DynArray* ar1 = new DynArray[5]
-    {
-        {arrayFactory(15)},
-        {arrayFactory(5)},
-        {arrayFactory(7)},
-        {arrayFactory(3)},
-        {arrayFactory(20)}
-    };
-    for (int i = 0; i < 5; i++)
-    {
-        ar1[i].Print();
-    }
-    ar1[3] = ar1[0];
-    for (int i = 0; i < 5; i++)
-    {
-        ar1[i].Print();
-    }
-    delete[]ar1;*/
-    
+    MedalTable mt1;
+    mt1["USSR"][MedalRow::GOLD] = 14;
+    mt1["USSR"][MedalRow::SILVER] = 5;
+    mt1["USA"][MedalRow::BRONZE] = 4;
+    mt1["USA"][MedalRow::SILVER] = 6;
+    mt1["CH"][MedalRow::GOLD] = 5;
+    mt1["CH"][MedalRow::SILVER] = 2;
+
+    mt1.print();
+
+    const MedalTable mt2{ mt1 };
+    mt2.print();
+
+  
 }
 
