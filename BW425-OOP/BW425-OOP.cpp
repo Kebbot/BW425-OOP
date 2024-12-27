@@ -12,7 +12,6 @@ using namespace std;
 #define SQR(X) (X) * (X)
 class Date
 {
-
     int day;
     int month;
     int year;
