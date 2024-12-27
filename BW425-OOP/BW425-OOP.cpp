@@ -195,6 +195,7 @@ public:
         else
             cout << " i can`t find the index..." << endl;
     }
+    
 };
 
 //ДЗ от 18-12
@@ -318,6 +319,7 @@ DynArray arrayFactory(int arrSize)
     return move(arr); //можно move(arr) - для вызова конструктора перемещения
 }
 
+class Rectangle123;
 class Tochka
 {
     double x;
@@ -327,13 +329,61 @@ public:
     Tochka() = default;
     //Tochka(int pX, int pY) = delete; //Запрещаем использовать int в параметрах
     Tochka(double pX, double pY) : x{ pX }, y{ pY } {}
-    Tochka& setX(int pX) = delete; /*{ x = pX; return *this; }*/
-    Tochka& setY(int pY) = delete; /*{ y = pY; return *this; }*/
+    //Tochka& setX(int pX) = delete; /*{ x = pX; return *this; }*/
+    //Tochka& setY(int pY) = delete; /*{ y = pY; return *this; }*/
     void Pokaz() const
     {
         cout << "(" << x << "," << y << ")" << endl;
     }
+    friend Tochka operator+(Tochka& p1, Tochka& p2) 
+    {
+        return Tochka{ p1.x + p2.x, p1.y + p2.y };
+    }
+    explicit operator bool()const { return x and y; }
+    explicit operator Point() const { return Point{ x,y }; }
+
+    friend ostream& operator<<(ostream& out, const Tochka& object)
+    {
+        //из программы куда-то
+        out << "(" << object.x << "," << object.y << ")";
+        return out;
+    }
+    friend istream& operator>>(istream& in, Tochka& object)
+    {
+        //откуда-то В программу
+
+        /*in >> object.x;
+        in.ignore(1);
+        in >> object.y;*/
+        in >> object.x >> object.y;
+        return in;
+    }
+    
+    friend Rectangle123;
 };
+class Rectangle123
+{
+    Tochka leftUpCorner;
+    Tochka rightDownCorner;
+public:
+    Rectangle123() = default;
+    Rectangle123(const Tochka& leftUpCorner,int sideP,int sideBP) :
+        leftUpCorner{ leftUpCorner }, 
+        rightDownCorner{ leftUpCorner.x + sideP,leftUpCorner.y + sideBP } {}
+    Rectangle123(const Tochka& leftUpCorner, const Tochka& rightDownCorner) :
+        leftUpCorner{ leftUpCorner }, rightDownCorner{ rightDownCorner }{ }
+    int getSideA()const { return rightDownCorner.x - leftUpCorner.x;}
+    int getSideB()const { return rightDownCorner.y - leftUpCorner.y; }
+    friend ostream& operator<<(ostream& out, const Rectangle123& object)
+    {
+        out << "[" << object.leftUpCorner << " "
+            << object.getSideA()
+            << " X " << object.getSideB()
+            << object.rightDownCorner << "]";
+        return out;
+    }
+};
+
 
 int maxX(int a, int b) { return a > b ? a : b; }
 template <typename T1, typename T2> 
@@ -584,6 +634,62 @@ public:
     ~Matrix() { delete[] data; }
 };
 
+class FriendClass
+{
+    //определение класса
+};
+
+class SomeClass //какой-то класс
+{
+    // определение класса SomeClass
+    friend FriendClass;
+};
+
+class Human
+{
+public:
+    string name;
+    Human() = default;
+    Human(string name) : name{ name } { cout << "Конструктор Human"; }
+    ~Human() { cout << "Деструктор Human\n"; }
+};
+class Flatt
+{
+public:
+    Human* humans;
+    int numHumans;
+
+    Flatt() = default;
+    Flatt(int numHumans) : numHumans{ numHumans } {}
+    void setHumans(int numHumans)
+    {
+        humans = new Human[numHumans];
+        cout << "Конструктор Flatt";
+        for (int i = 0; i < numHumans; i++)
+        {
+            getline(cin, humans->name);
+        }
+    }
+    ~Flatt() { cout << "Деструктор Flatt\n";delete[] humans;}
+};
+
+class House
+{
+public:
+    Flatt* flats;
+    int numFlats;
+    int numHuman;
+    House(int numFlats, int numHuman) :
+        numFlats{ numFlats }, numHuman{ numHuman }
+    {
+        flats = new Flatt[numFlats];
+        for (int i = 0; i < numFlats; i++)
+        {
+            flats[i].setHumans(numHuman);
+        }
+    }
+    ~House() { cout << "Деструктор House\n"; delete[] flats; }
+};
 
 int main()
 {
@@ -593,58 +699,14 @@ int main()
     SetConsoleCP(1251);
     srand(time(NULL));
 
-    /*MedalTable mt1;
-    mt1["USSR"][MedalRow::GOLD] = 14;
-    mt1["USSR"][MedalRow::SILVER] = 5;
-    mt1["USA"][MedalRow::BRONZE] = 4;
-    mt1["USA"][MedalRow::SILVER] = 6;
-    mt1["CH"][MedalRow::GOLD] = 5;
-    mt1["CH"][MedalRow::SILVER] = 2;
-
-    mt1.print();
-
-    const MedalTable mt2{ mt1 };
-    mt2.print();*/
-//#define USER_INPUT 0;
-//
-//    int rows{ 3 };
-//    int columns{ 3 };
-//    int counter{ 1 };
-//#if USER_INPUT == 1
-//    cout << "Введите кол-во строк матрицы" << endl;
-//    cin >> rows;
-//    cout << "Введите кол-во столбцов матрицы" << endl;
-//    cin >> columns;
-//#endif 
-//
-//    Matrix matrix{ rows, columns };
-//    for (int y = 0; y < rows; y++)
-//    {
-//        for (int x = 0; x < columns; x++)
-//        {
-//            matrix (y,x) = counter++;
-//        }
-//    }
-//    matrix.print();
-//    cout << matrix(1, 1) <<endl;
-//    matrix.deleteColumn(2);
-//    matrix.print();
-//
-//    int* newColumns{ new int[columns] {11,22,33} };
-//    matrix.addColumn(0, newColumns);
-//    matrix.print();
-//
-//    matrix.deleteRow(2);
-//    matrix.print();
-//
-//    int* newRow{ new int[rows] {111,222,333} };
-//    matrix.addRow(2, newRow);
-//    matrix.print();
-//
-//    delete[] newRow;
-//    delete[] newColumns;
-
+    /*Rectangle123 rect1{ {0,0},{10,5} };
+    Rectangle123 rect2{ {5,5},{10,10} };
+    cout << "Rectangle 1: " << rect1 << endl;
+    cout << "Rectangle 2: " << rect2 << endl;*/
+    House house{ 3,2 };
    
-  
 }
 
+
+//ostream& operator<<(ostream& out,const ClassName& object); //Вывод
+   //istream& operator>>(istream& out,const ClassName& object); //Ввод
