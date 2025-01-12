@@ -1,5 +1,17 @@
 ﻿  BW425-OOP.cpp
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(375,52): warning C4244: return: преобразование "double" в "int", возможна потеря данных
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(376,52): warning C4244: return: преобразование "double" в "int", возможна потеря данных
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(700,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(132,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(66,67): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+      C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(66,67):
+      контекст создания экземпляра шаблона (сначала самый старый)
+          C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(111,25):
+          выполняется компиляция ссылки на экземпляр класс шаблон функции "DynArray<Point>"
+          C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(66,5):
+          во время компиляции функции-члена класс шаблон "DynArray<Point>::DynArray(const std::initializer_list<T> &)"
+          with
+          [
+              T=Point
+          ]
+              C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(111,35):
+              см. первую ссылку на DynArray<Point>::DynArray "Start"
+  
   BW425-OOP.vcxproj -> C:\Users\Admin\Documents\GitHub\BW425-OOP\x64\Debug\BW425-OOP.exe
