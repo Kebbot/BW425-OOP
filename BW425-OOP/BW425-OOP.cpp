@@ -96,25 +96,133 @@ struct Point
         return output;
     }
 };
+
+class Stack
+{
+    // Нижняя и верхняя границы
+    enum { EMPTY =-1, FULL=20};
+    
+    // Массив для хранения данных
+    char st[FULL + 1];
+
+    // Указатель на вершину
+    int top;
+public:
+    //конструктор по умолчанию
+    Stack()
+    {
+        //изначально стек пустой
+        top = EMPTY;
+    }
+
+    //добавление элемента
+    void Push(char c)
+    {
+        //Если в стеке есть место, то увеличиваем указатель на вершину
+        // стека и вставляем новый элемент
+        if (!isFull())
+            st[++top] = c;
+    }
+    
+    // Извлечение элемента
+    char Pop()
+    {
+        //Если в стеке есть элементы, то возвращаем верхний
+        //и уменьшаем указатель на вершину стека
+        if (!isEmpty())
+            return st[top--];
+        else //если нет элементов
+            return 0;
+    }
+
+    //очистка стека
+    void Clear()
+    {
+        /*Эффективная "очистка" стека
+        (данные в массиве все еще есть/существуют, 
+        но фунции класса, ориентированные на работу с вершиной стека,
+        будут их игнорировать)*/
+        top = EMPTY;
+    }
+
+    //проверка на наличие элементов
+    bool isEmpty()
+    {
+        //Стек пуст?
+        return top == EMPTY;
+    }
+
+    //проверка на переполнение стека
+    bool isFull()
+    {
+        //Стек полон?
+        return top == FULL;
+    }
+
+    //Кол-во элементов в стеке
+    int getCount()
+    {
+        return top;
+    }
+
+};
+
+class A
+{
+public:
+    int init(int);
+private:
+    class B;
+    class Ref {
+        // pli имеет тип A::B*
+        B* pli;
+    };
+    class B {
+    public:
+        // pRef имеет тип A::Ref*
+        Ref* pRef;
+        int value;
+        B* next; //указатель на собственный класс
+        static int static_mem;
+
+        B(int value = 0) /*: value{ value } {}*/;//Конструктор
+        void mf( A&);
+       
+    };
+    B* obj;
+};
+
+//class A::B {
+//public:
+//    int value;
+//    B(int value = 0) /*: value{ value } {}*/;//Конструктор
+//    B* next; //указатель на собственный класс
+//    static int static_mem;
+//};
+void A::B::mf( A& i1)
+{
+    int memb = i1.init(5);
+}
+A::B::B(int value)
+{
+    
+}
+
+int A::B::static_mem = 1024;
+
+
+class B
+{
+public:
+    class A {};
+    A* obj;
+};
+
 void Start()
 {
     bool choice = true;
     do {
-
-        DynArray<int> array{ 7,8,9,6,5,1,0 };
-        for (int i = 0; i < array.getLength(); i++)
-        {
-            cout << array[i] << " ";
-        }
-        cout << endl;
-
-        DynArray<Point> pointArray{ Point{1,1},Point{5,5}, Point{9,9} };
-        for (int i = 0; i < pointArray.getLength(); i++)
-        {
-            cout << pointArray[i] << " ";
-        }
-        cout << endl;
-
+        
 
 
         cout << "Начать заново?\n" << "0 - Выход\n" 
@@ -134,6 +242,5 @@ int main()
 
     Start();
     cout << "Конец программы" << endl;
+    
 }
-
-
