@@ -12,140 +12,66 @@
 #include "Student.h"
 using namespace std;
 
-//Вроженные классы
-class A
-{
-public:
-    void print()
-    {
-        obj->poo(*this);
-    }
-private:
-    int i = 10;
-    class B;
-    class Ref {
-        // pli имеет тип A::B*
-        B* pli;
-    };
-    class B {
-    public:
-        // pRef имеет тип A::Ref*
-        Ref* pRef;
-        int value = 5;
-        B* next; //указатель на собственный класс
+// Описание наследования
+/*
+class имя_класса : спецификатор_доступа имя_родительского_класса
+{ описание_класса; };
 
-        static int static_mem;
+*/
 
-        B(int value = 0) /*: value{ value } {}*/;//Конструктор
-        void mf( A&);
-        int sum(A& ptr)
-        {
-            int sum = ptr.i + value + ptr.obj->value;
-            return sum;
-        }
-        void poo(A& ptr)
-        {
-            cout << ptr.i + value << endl;
-            cout << ptr.obj->value << endl;
-        }
-
-    };
-    B* obj = new B;
-};
-
-//class A::B {
-//public:
-//    int value;
-//    B(int value = 0) /*: value{ value } {}*/;//Конструктор
-//    B* next; //указатель на собственный класс
-//    static int static_mem;
-//};
-void A::B::mf( A& i1)
-{
-    
-}
-A::B::B(int value)
-{
-    
-}
-int A::B::static_mem = 1024;
-class B
-{
-public:
-    class A {};
-    A* obj;
-};
-
-//Агрегирование
 class Point
 {
-    int X;
-    int Y;
+protected:
+    int x;
+    int y;
 public:
-    Point() {
-        X = Y = 0;
+    Point() { x = 0; y = 0; }
+
+    int& getX() {
+        return x;
     }
-    void setPoint(int iX, int iY) {
-        X = iX;
-        Y = iY;
-    }
-    void Show() {
-        cout << "------------------------------" << endl << endl;
-        cout << X << "\t" << Y << endl << endl;
-        cout << "------------------------------" << endl << endl;
+    int& getY() {
+        return y;
     }
 };
 
-class Figura {
-    //Агрегация точки - 
-    // (внутри одного класса (отдельного) находятся объект(ы) другого класса
-    Point* obj; 
-
-    int count; 
-    int color; 
+class Figura
+{
+protected:
+    int Fx;
+    int Fy;
 public:
-    Figura() {
-        count = color = 0;
-        obj = nullptr;
-    }
-    // Создание фигуры
-    void createFigura(int cr, int ct) {
-        //если углов меньше 3 - это не фигура
-        if (ct < 3) exit(0);
-        // инициализация света и кол-ва углов
-        count = ct;
-        color = cr;
-        //выделение памяти под массив точек
-        obj = new Point[count];
+    Figura() { Fx = 0; Fy = 0; }
 
-        if(!obj)exit(0);
-
-        //установка координат точек
-        int tempX, tempY;
-        for (int i = 0; i < count; i++)
-        {
-            cout << "Set X\n";
-            cin >> tempX;
-            cout << "Set Y\n";
-            cin >> tempY;
-            obj[i].setPoint(tempX, tempY);
-        }
+    int& FgetX() {
+        return Fx;
     }
-    //показ фигуры
-    void ShowFigura() {
-        cout << "------------------------------" << endl << endl;
-        cout <<"Color - " << color << endl << endl;
-        cout << "Points - " << count << endl << endl;
-        for (int i = 0; i < count; i++)
-        {
-            obj[i].Show();
-        }
-        cout << "------------------------------" << endl << endl;
+    int& FgetY() {
+        return Fy;
     }
+};
 
-    //Если фигура была, то очистить память
-    ~Figura(){
-        if (obj != nullptr) delete[] obj;
+class MyWindow : public Point, public Figura
+{
+    int width;
+    int height;
+public:
+    MyWindow() { width = 0; height = 0; }
+    MyWindow(int W, int H) : width{ W }, height{ H } {}
+    int& getWidth() {
+        return width;
+    }
+    int& getHeight() {
+        return height;
+    }
+    void moveX(int DX) { x = DX;}
+    void moveY(int DY) { y = DY; }
+    void Show() const {
+        cout << "----------------------------" << endl;
+        cout << "X = " << x << endl;
+        cout << "Y = " << y << endl;
+        cout << "W = " << width << endl;
+        cout << "H = " << height << endl << endl;
     }
 };
 
@@ -154,9 +80,20 @@ void Start()
     bool choice = true;
     do {
         
-        Figura f;
-        f.createFigura(255, 3);
-        f.ShowFigura();
+        MyWindow A(10, 10);
+        A.Show();
+
+        A.getX() = 5;
+        A.getY() = 3;
+        A.getWidth() = 40;
+        A.getHeight() = 50;
+        A.Show();
+
+        A.moveX(2);
+        A.moveY(7);
+        A.Show();
+
+        
 
         cout << "Начать заново?\n" << "0 - Выход\n" 
             << "Всё остальное продолжает программу" << endl;
