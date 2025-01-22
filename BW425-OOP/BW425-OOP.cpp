@@ -75,25 +75,95 @@ public:
     }
 };
 
+//Наследование шаблона класса
+template <class T>
+class Pair
+{
+    T a;
+    T b;
+public:
+    Pair(T t1, T t2) : a{ t1 }, b{ t2 } {}
+};
+template <class T>
+class Trio : public Pair<T>
+{
+    T c;
+public:
+    Trio(T t1, T t2, T t3) : Pair<T>(t1, t2), c{ t3 } {}
+};
+
+class A {
+public: 
+    virtual void v_function() = 0; //"Чисто" виртуальная функция
+};
+class B : public A
+{
+    virtual void v_function() { cout << "ПлюхПаф" << endl; }
+};
+class C : public B
+{
+    virtual void v_function() { cout << "ПлюхПафБац" << endl; }
+};
+
+// Абстрактный базовай класс
+class Animal
+{
+public:
+    string Title;
+    Animal(string Title) : Title{Title }{}
+    virtual void speak() = 0;
+};
+
+class Frog : public Animal
+{
+public:
+    Frog(string Title) : Animal(Title){}
+    virtual void speak() { cout << Title << " Говорит " << "Ква-Ква" << endl; }
+};
+class Dog : public Animal
+{
+public:
+    Dog(string Title) : Animal(Title) {}
+    virtual void speak() { cout << Title << " Говорит " << "Гав-Гав" << endl; }
+};
+class Cat : public Animal
+{
+public:
+    Cat(string Title) : Animal(Title) {}
+    virtual void speak() { cout << Title << " Говорит " << "Мур-Мур" << endl; }
+};
+
+class Lion : public Cat
+{
+public:
+    Lion(string Title) : Cat(Title) {}
+    virtual void speak() { cout << Title << " Говорит " << "RRRRRRR" << endl; }
+    virtual void speak(int when) { cout << Title << " Говорит " << "RRRRRRR" << endl; }
+};
+
 void Start()
 {
     bool choice = true;
     do {
         
-        MyWindow A(10, 10);
-        A.Show();
+       //след тема = Виртуальный базовый класс
+        Animal* animals[4] = {
+            new Dog("Чаппи"),
+            new Cat("Мурка"),
+            new Frog("Юлий"),
+            new Lion("Санек")
+        };
+        for (int i = 0; i < 4; i++)
+        {
+            animals[i]->speak();
+        }
+       /* Lion f{ "Санек" };
+        f.speak();
+        f.speak(4);*/
+       /* B* point_to_obj_B;
+        point_to_obj_B = &object_A;
 
-        A.getX() = 5;
-        A.getY() = 3;
-        A.getWidth() = 40;
-        A.getHeight() = 50;
-        A.Show();
-
-        A.moveX(2);
-        A.moveY(7);
-        A.Show();
-
-        
+        A* point = new C;*/
 
         cout << "Начать заново?\n" << "0 - Выход\n" 
             << "Всё остальное продолжает программу" << endl;
