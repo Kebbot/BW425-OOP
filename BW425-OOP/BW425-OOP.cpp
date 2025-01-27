@@ -12,158 +12,111 @@
 #include "Student.h"
 using namespace std;
 
-// Описание наследования
-/*
-class имя_класса : спецификатор_доступа имя_родительского_класса
-{ описание_класса; };
-
-*/
-
-class Point
+//Виртуальный базовый класс
+class A
 {
-protected:
-    int x;
-    int y;
 public:
-    Point() { x = 0; y = 0; }
+    int val;
+};
 
-    int& getX() {
-        return x;
-    }
-    int& getY() {
-        return y;
+class B : public virtual A { public: }; //виртуализация базового класса
+class C : public virtual A {public:}; //виртуализация базового класса
+
+class D : public B, public C
+{
+public:
+    int Get_val() {
+        return val; //результат (нет ошибки)
     }
 };
 
-class Figura
+// Виртуальный деструктор
+class Base
 {
-protected:
-    int Fx;
-    int Fy;
+private:
+    char* str;
+    int size;
 public:
-    Figura() { Fx = 0; Fy = 0; }
-
-    int& FgetX() {
-        return Fx;
+    Base(const char* Str, int s) {
+        size = s;
+        str = new char[size];
+        strcpy_s(str, size, Str);
     }
-    int& FgetY() {
-        return Fy;
-    }
-};
-
-class MyWindow : public Point, public Figura
-{
-    int width;
-    int height;
-public:
-    MyWindow() { width = 0; height = 0; }
-    MyWindow(int W, int H) : width{ W }, height{ H } {}
-    int& getWidth() {
-        return width;
-    }
-    int& getHeight() {
-        return height;
-    }
-    void moveX(int DX) { x = DX;}
-    void moveY(int DY) { y = DY; }
-    void Show() const {
-        cout << "----------------------------" << endl;
-        cout << "X = " << x << endl;
-        cout << "Y = " << y << endl;
-        cout << "W = " << width << endl;
-        cout << "H = " << height << endl << endl;
+    virtual ~Base()
+    {
+        cout << "Деструктор Base" << endl;
+        delete[] str;
     }
 };
 
-//Наследование шаблона класса
-template <class T>
-class Pair
+class Derived : public Base
 {
-    T a;
-    T b;
+private:
+    char* str2;
+    int size2;
 public:
-    Pair(T t1, T t2) : a{ t1 }, b{ t2 } {}
-};
-template <class T>
-class Trio : public Pair<T>
-{
-    T c;
-public:
-    Trio(T t1, T t2, T t3) : Pair<T>(t1, t2), c{ t3 } {}
+    Derived(const char* Str1, int s1, const char* Str2, int s2 ) : Base(Str1,s1){
+        size2 = s2;
+        str2 = new char[size2];
+        strcpy_s(str2, size2, Str2);
+    }
+     ~Derived()
+    {
+        cout << "Деструктор Derived" << endl;
+        delete[] str2;
+    }
+
 };
 
-class A {
-public: 
-    virtual void v_function() = 0; //"Чисто" виртуальная функция
-};
-class B : public A
+//"Чисто" виртуальный деструктор
+class Something
 {
-    virtual void v_function() { cout << "ПлюхПаф" << endl; }
+public:
+    virtual ~Something() = 0; //Объявление
 };
-class C : public B
-{
-    virtual void v_function() { cout << "ПлюхПафБац" << endl; }
-};
+Something::~Something() {}; //описание
 
-// Абстрактный базовай класс
-class Animal
+void Test(int tool)
 {
-public:
-    string Title;
-    Animal(string Title) : Title{Title }{}
-    virtual void speak() = 0;
-};
-
-class Frog : public Animal
+    cout << "Начало" << endl;
+    if (tool == 2)
+        throw "\nОшибка - tool = 2\n";
+    else if(tool == 5)
+        throw "\nОшибка - tool = 5\n";
+}
+void Test2(int tool)
 {
-public:
-    Frog(string Title) : Animal(Title){}
-    virtual void speak() { cout << Title << " Говорит " << "Ква-Ква" << endl; }
-};
-class Dog : public Animal
-{
-public:
-    Dog(string Title) : Animal(Title) {}
-    virtual void speak() { cout << Title << " Говорит " << "Гав-Гав" << endl; }
-};
-class Cat : public Animal
-{
-public:
-    Cat(string Title) : Animal(Title) {}
-    virtual void speak() { cout << Title << " Говорит " << "Мур-Мур" << endl; }
-};
-
-class Lion : public Cat
-{
-public:
-    Lion(string Title) : Cat(Title) {}
-    virtual void speak() { cout << Title << " Говорит " << "RRRRRRR" << endl; }
-    virtual void speak(int when) { cout << Title << " Говорит " << "RRRRRRR" << endl; }
-};
+    try {
+        throw "\nHello\n";
+    }
+    catch (const char* str)
+    {
+        cout << "Ошибка в функции!" << endl;
+        throw;
+    }
+}
 
 void Start()
 {
     bool choice = true;
     do {
         
-       //след тема = Виртуальный базовый класс
-        Animal* animals[4] = {
-            new Dog("Чаппи"),
-            new Cat("Мурка"),
-            new Frog("Юлий"),
-            new Lion("Санек")
-        };
-        for (int i = 0; i < 4; i++)
-        {
-            animals[i]->speak();
-        }
-       /* Lion f{ "Санек" };
-        f.speak();
-        f.speak(4);*/
-       /* B* point_to_obj_B;
-        point_to_obj_B = &object_A;
+        try {
+            int a, b;
+            cout << "Введите число 1: ";
+            cin >> a;
+            cout << "Введите число 2: ";
+            cin >> b;
 
-        A* point = new C;*/
+            if (b == 0)
+                throw b;
+
+            cout << "Результат:" << (a / b) << endl;
+        }
+        catch (...)
+        {
+            cout << "Какая-то Ошибка" << endl;
+        }
 
         cout << "Начать заново?\n" << "0 - Выход\n" 
             << "Всё остальное продолжает программу" << endl;
@@ -171,6 +124,31 @@ void Start()
         _getch();
     } while (choice);
 }
+namespace combat
+{
+    void fire() {
+        cout << "ВЫСТРЕЕЕЛ!";
+    }
+}
+namespace exploration 
+{
+    void fire() {
+        cout << "Зажечь факел";
+    }
+}
+namespace combat
+{
+    void scope() {
+        cout << "ВЫСТРЕЕЕЛ!";
+    }
+}
+//using combat::fire;
+namespace //abot
+{
+    //элементы данной видимости
+    int pro;
+}
+//using namespace abot;
 int main()
 {
     system("chcp 1251 > nul");
@@ -178,9 +156,29 @@ int main()
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
     srand(time(NULL));
+    /*
+    * ostream - использует << для вывода (операция помещения в поток)
+    * istream - использует >> для ввода (операция извлечение из потока)
+    * cout - объект класса ostream
+    * cin - объект класса istream
+    * cerr - объект класса ostream (не буфер)
+    * clog - объект класса ostream (буфер)
+    */
+  
+    ofstream filePath{ "Test1.", ios::app };
+    string text;
+    getline(cin, text);
+
+    if (!filePath.is_open())
+    {
+        cout << "Файл не открыт!!" << endl;
+    }
+    filePath << text;
+    filePath.close();
 
 
-    Start();
+    //Start();
     cout << "Конец программы" << endl;
     
 }
+//след. тема = работа с потоками в файлах.

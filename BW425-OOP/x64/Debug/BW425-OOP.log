@@ -1,3 +1,4 @@
 ﻿  BW425-OOP.cpp
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(180,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(92,24): warning C4101: str: неиспользованная локальная переменная
+C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(158,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
   BW425-OOP.vcxproj -> C:\Users\Admin\Documents\GitHub\BW425-OOP\x64\Debug\BW425-OOP.exe
