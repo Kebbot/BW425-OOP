@@ -12,89 +12,6 @@
 #include "Student.h"
 using namespace std;
 
-//Виртуальный базовый класс
-class A
-{
-public:
-    int val;
-};
-
-class B : public virtual A { public: }; //виртуализация базового класса
-class C : public virtual A {public:}; //виртуализация базового класса
-
-class D : public B, public C
-{
-public:
-    int Get_val() {
-        return val; //результат (нет ошибки)
-    }
-};
-
-// Виртуальный деструктор
-class Base
-{
-private:
-    char* str;
-    int size;
-public:
-    Base(const char* Str, int s) {
-        size = s;
-        str = new char[size];
-        strcpy_s(str, size, Str);
-    }
-    virtual ~Base()
-    {
-        cout << "Деструктор Base" << endl;
-        delete[] str;
-    }
-};
-
-class Derived : public Base
-{
-private:
-    char* str2;
-    int size2;
-public:
-    Derived(const char* Str1, int s1, const char* Str2, int s2 ) : Base(Str1,s1){
-        size2 = s2;
-        str2 = new char[size2];
-        strcpy_s(str2, size2, Str2);
-    }
-     ~Derived()
-    {
-        cout << "Деструктор Derived" << endl;
-        delete[] str2;
-    }
-
-};
-
-//"Чисто" виртуальный деструктор
-class Something
-{
-public:
-    virtual ~Something() = 0; //Объявление
-};
-Something::~Something() {}; //описание
-
-void Test(int tool)
-{
-    cout << "Начало" << endl;
-    if (tool == 2)
-        throw "\nОшибка - tool = 2\n";
-    else if(tool == 5)
-        throw "\nОшибка - tool = 5\n";
-}
-void Test2(int tool)
-{
-    try {
-        throw "\nHello\n";
-    }
-    catch (const char* str)
-    {
-        cout << "Ошибка в функции!" << endl;
-        throw;
-    }
-}
 
 void Start()
 {
@@ -124,30 +41,16 @@ void Start()
         _getch();
     } while (choice);
 }
-namespace combat
-{
-    void fire() {
-        cout << "ВЫСТРЕЕЕЛ!";
-    }
+
+int Modulus(int iN, int iMod) {
+    int iQ = (iN / iMod);
+    return iN - (iQ * iMod);
 }
-namespace exploration 
-{
-    void fire() {
-        cout << "Зажечь факел";
-    }
+
+char GetChar(int iGenerator, char cBase, int iRange) {
+    return (cBase + Modulus(iGenerator, iRange));
 }
-namespace combat
-{
-    void scope() {
-        cout << "ВЫСТРЕЕЕЛ!";
-    }
-}
-//using combat::fire;
-namespace //abot
-{
-    //элементы данной видимости
-    int pro;
-}
+
 //using namespace abot;
 int main()
 {
@@ -156,25 +59,38 @@ int main()
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
     srand(time(NULL));
-    /*
-    * ostream - использует << для вывода (операция помещения в поток)
-    * istream - использует >> для ввода (операция извлечение из потока)
-    * cout - объект класса ostream
-    * cin - объект класса istream
-    * cerr - объект класса ostream (не буфер)
-    * clog - объект класса ostream (буфер)
-    */
-  
-    ofstream filePath{ "Test1.", ios::app };
-    string text;
-    getline(cin, text);
+ 
+    enum LvlMap
+    {
+        lvl_1 = 0, lvl_2, lvl_3, lvl_4
+    };
+    
 
+    
+    vector<string> text = { "lvl1.txt","lvl2.txt","lvl3.txt","lvl4.txt" };
+    string str;
+    
+    fstream filePath{ text[lvl_1], ios::in };
     if (!filePath.is_open())
     {
         cout << "Файл не открыт!!" << endl;
     }
-    filePath << text;
+    while (getline(filePath, str))
+    {
+        text.push_back(str);
+    }
     filePath.close();
+    fstream path{ "lvl2.txt", ios::out };
+    for (int i = 0; i < text.size(); i++)
+    {
+        /*for (int j = 0; j < text[i].size(); j++)
+        {
+            cout << text[i][j];
+            Sleep(0);
+        }
+        cout << endl;*/
+        path << text[i] << endl;
+    }
 
 
     //Start();
