@@ -3,55 +3,90 @@
 #include <windows.h>
 #include <string>
 #include <cmath>
-#include <io.h>
-#include <conio.h>
 #include <vector>
 #include <fstream>
-#include <cassert>
-#include <initializer_list>
-#include "Student.h"
+#include <iterator>
+#include <list>
+//#include "Student.h"
+
 using namespace std;
 
-
-void Start()
+//dynamic_cast
+class B
 {
-    bool choice = true;
-    do {
-        
-        try {
-            int a, b;
-            cout << "Введите число 1: ";
-            cin >> a;
-            cout << "Введите число 2: ";
-            cin >> b;
+public:
+    //виртуальная функция
+    virtual void Test() {
+        cout << "Test" << endl;
+    }
+};
+class D : public B
+{
+public:
+    //переопределение виртуальной функции
+    void Test()
+    {
+        cout << "Test D" << endl;
+    }
+};
 
-            if (b == 0)
-                throw b;
+//const_cast - Снимает атрибут const (или ставит) (работает с const и volatile)
+void test_pow(const int* v)
+{
+    int* tmp;
+    tmp = const_cast<int*>(v);
+    *tmp = *v * *v;
+}
 
-            cout << "Результат:" << (a / b) << endl;
-        }
-        catch (...)
+class FileOpen
+{
+    FILE* f;
+public: 
+    FileOpen(const char* fileName, const char* mode)
+    {
+        if (!(f = fopen(fileName, mode)))
         {
-            cout << "Какая-то Ошибка" << endl;
+            exit(0);
         }
+    }
+    ~FileOpen()
+    {
+        fclose(f);
+    }
+};
 
-        cout << "Начать заново?\n" << "0 - Выход\n" 
-            << "Всё остальное продолжает программу" << endl;
-        cin >> choice;
-        _getch();
-    } while (choice);
+void f() {
+    FileOpen myFile("Test.txt", "r+");
 }
 
-int Modulus(int iN, int iMod) {
-    int iQ = (iN / iMod);
-    return iN - (iQ * iMod);
+template <class InIter, class Dist>
+void advance(InIter& itr, Dist d);
+
+template <class InIter>
+ptrdiff_t distance(InIter& start, InIter end);
+
+//template <class T, class Allocator = Allocator<T> >
+//class List;
+
+typedef list<int> ourList;
+void ShowList(ourList& l1, ourList& l2)
+{
+    //создаем итератор
+    ourList::iterator iter;
+    cout << "List1: ";
+    for (iter = l1.begin(); iter != l1.end(); iter++)
+    {
+        cout << *iter << " ";
+    }
+    cout << endl << "List2: ";
+    for (iter = l2.begin(); iter != l2.end(); iter++)
+    {
+        cout << *iter << " ";
+    }
+    cout << endl << endl;
 }
 
-char GetChar(int iGenerator, char cBase, int iRange) {
-    return (cBase + Modulus(iGenerator, iRange));
-}
 
-//using namespace abot;
 int main()
 {
     system("chcp 1251 > nul");
@@ -59,41 +94,58 @@ int main()
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
     srand(time(NULL));
+
+
+    list<int> list1, list2;
+    for (size_t i = 0; i < 6; i++)
+    {
+        list1.push_back(i);
+        list2.push_back(i+i);
+    }
+    ShowList(list1, list2);
+
+    list2.splice(list2.end(), list2, list2.begin());
+    ShowList(list1, list2);
+
+    list1.reverse();
+    ShowList(list1, list2);
+  
+    list1.sort();
+    list2.sort();
+    ShowList(list1, list2);
+
+    list1.merge(list2);
+    ShowList(list1, list2);
+
+    list1.unique();
+    ShowList(list1, list2);
+
+    
+    //const_cast - Снимает атрибут const (или ставит) (работает с const и volatile)
+
+    //dynamic_cast
+    //указатель на класс родитель
+    //B* ptr_b, obj_b;
+    ////указатель на класс потомок 
+    //D* ptr_d, obj_d;
+    ////приводим адрес объекта (D*) к указателю типа D*
+    //ptr_d = dynamic_cast<D*> (&obj_d);
+    ////если всё прошло успешно то вернется !0
  
-    enum LvlMap
-    {
-        lvl_1 = 0, lvl_2, lvl_3, lvl_4
-    };
-    
+    //reinterpret_cast
+    //int x; //Целое число
+    //const char* strT = { "This is string!!!" };
+    //char* str = new char[30];
+    //strcpy_s(str, 30, strT);
+    //cout << str << endl;
+    //x = reinterpret_cast<int>(str);
+    //cout << x << endl;
+    //str = reinterpret_cast<char*>(&x);
+    //cout << str << endl;
 
+    //static_cast - аналог (double)num;
     
-    vector<string> text = { "lvl1.txt","lvl2.txt","lvl3.txt","lvl4.txt" };
-    string str;
     
-    fstream filePath{ text[lvl_1], ios::in };
-    if (!filePath.is_open())
-    {
-        cout << "Файл не открыт!!" << endl;
-    }
-    while (getline(filePath, str))
-    {
-        text.push_back(str);
-    }
-    filePath.close();
-    fstream path{ "lvl2.txt", ios::out };
-    for (int i = 0; i < text.size(); i++)
-    {
-        /*for (int j = 0; j < text[i].size(); j++)
-        {
-            cout << text[i][j];
-            Sleep(0);
-        }
-        cout << endl;*/
-        path << text[i] << endl;
-    }
-
-
-    //Start();
     cout << "Конец программы" << endl;
     
 }
