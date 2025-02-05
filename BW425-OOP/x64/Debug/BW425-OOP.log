@@ -1,13 +1,3 @@
 ﻿  BW425-OOP.cpp
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(95,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(101,25): warning C4267: аргумент: преобразование из "size_t" в "_Ty"; возможна потеря данных
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(101,25): warning C4267:         with
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(101,25): warning C4267:         [
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(101,25): warning C4267:             _Ty=int
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(101,25): warning C4267:         ]
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(102,26): warning C4267: аргумент: преобразование из "size_t" в "_Ty"; возможна потеря данных
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(102,26): warning C4267:         with
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(102,26): warning C4267:         [
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(102,26): warning C4267:             _Ty=int
-C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(102,26): warning C4267:         ]
+C:\Users\Admin\Documents\GitHub\BW425-OOP\BW425-OOP\BW425-OOP.cpp(22,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
   BW425-OOP.vcxproj -> C:\Users\Admin\Documents\GitHub\BW425-OOP\x64\Debug\BW425-OOP.exe
